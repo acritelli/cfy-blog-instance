@@ -1,6 +1,6 @@
 # A random suffix is used for resources to prevent any naming collisions
 resource "random_id" "suffix" {
-    byte_length = 4
+  byte_length = 4
 }
 
 resource "aws_security_group" "allow_ssh_and_http" {
