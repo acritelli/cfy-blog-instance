@@ -1,6 +1,6 @@
 # A random suffix is used for resources to prevent any naming collisions
 resource "random_id" "suffix" {
-    byte_length = 4
+  byte_length = 4
 }
 
 resource "aws_security_group" "allow_ssh_and_http" {
@@ -19,6 +19,14 @@ resource "aws_security_group" "allow_ssh_and_http" {
     description = "HTTP access"
     from_port   = 80
     to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description = "HTTPS access"
+    from_port   = 443
+    to_port     = 443
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
@@ -42,6 +50,7 @@ resource "aws_instance" "instance" {
   key_name = var.ssh_keypair
 
   tags = {
-    Name = "${var.instance_name}-${random_id.suffix.hex}"
+    Name       = "${var.instance_name}-${random_id.suffix.hex}"
+    created-by = "cloudify"
   }
 }
